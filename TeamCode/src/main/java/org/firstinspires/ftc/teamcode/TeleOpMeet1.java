@@ -18,35 +18,69 @@ public class TeleOpMeet1 extends LinearOpMode {
         DcMotor leftRearMotor = hardwareMap.get(DcMotor.class, "leftRear");
         DcMotor arm = hardwareMap.get(DcMotor.class, "Arm");
         DcMotor claw = hardwareMap.get(DcMotor.class, "Claw");
+        Servo grab1 = hardwareMap.get(Servo.class, "RightGrab");
+        Servo grab2 = hardwareMap.get(Servo.class, "LeftGrab");
+        Servo pincher = hardwareMap.get(Servo.class, "Pincher");
         rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        Servo rightGrab = hardwareMap.get(Servo.class, "sigma");
-//        rightGrab.setPosition(-sp-);
+
         int position = 0;
+        float positionS = 0;
         waitForStart();
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         while (opModeIsActive()) {
             if (gamepad2.dpad_up) {
-                position += 500;
+                position += 250;
                 sleep(100);
             }
             if (gamepad2.dpad_down) {
-                position -= 500;
+                position -= 250;
                 sleep(100);
             }
+//            if (gamepad1.dpad_up) {
+//                positionS += .1;
+//                sleep(100);
+//            }
+//            if (gamepad1.dpad_down) {
+//                positionS -= .1;
+//                sleep(100);
+//            }
             if(gamepad2.y) {
                 arm.setTargetPosition(position);
                 arm.setPower(.5);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            if(gamepad2.a) {
+                claw.setTargetPosition(position);
+                claw.setPower(.5);
+                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if(gamepad1.y) {
+                pincher.setPosition(positionS);
+            }
+            if(gamepad2.left_bumper) {
+                grab2.setPosition(.5);
+                grab1.setPosition(.3);
+            }
+            if(gamepad2.right_bumper) {
+                grab2.setPosition(.6);
+                grab1.setPosition(.2);
+            }
+            if (gamepad1.dpad_up) {
+                pincher.setPosition(.8);
+            }
+            if (gamepad1.dpad_down) {
+                pincher.setPosition(.6);
+            }
+            double y = gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
             y *= .5;
             x *= .5;
             rx *= .5;
+
             if(gamepad1.left_trigger > 0) {
                 y *= .5;
                 x *= .5;
@@ -64,6 +98,7 @@ public class TeleOpMeet1 extends LinearOpMode {
             rightFrontMotor.setPower(frontRightPower);
             rightRearMotor.setPower(backRightPower);
 
+            telemetry.addData("Position Servo",positionS);
             telemetry.addData("Position",arm.getCurrentPosition());
             telemetry.update();
         }
