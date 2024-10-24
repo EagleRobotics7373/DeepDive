@@ -28,16 +28,23 @@ public class TeleOpMeet1 extends LinearOpMode {
         int position = 0;
         float positionS = 0;
         waitForStart();
+
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        claw.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        claw.setPower(.25);
+        claw.setTargetPosition(-740);
+        claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         while (opModeIsActive()) {
-            if (gamepad2.dpad_up) {
-                position += 250;
-                sleep(100);
-            }
-            if (gamepad2.dpad_down) {
-                position -= 250;
-                sleep(100);
-            }
+//            if (gamepad2.dpad_up) {
+//                position += 250;
+//                sleep(100);
+//            }
+//            if (gamepad2.dpad_down) {
+//                position -= 250;
+//                sleep(100);
+//            }
 //            if (gamepad1.dpad_up) {
 //                positionS += .1;
 //                sleep(100);
@@ -47,39 +54,50 @@ public class TeleOpMeet1 extends LinearOpMode {
 //                sleep(100);
 //            }
             if(gamepad2.y) {
-                arm.setTargetPosition(position);
+                arm.setTargetPosition(12250);
                 arm.setPower(.5);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-
             if(gamepad2.a) {
-                claw.setTargetPosition(position);
-                claw.setPower(.5);
+                arm.setTargetPosition(0);
+                arm.setPower(.5);
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if(gamepad2.dpad_up) {
+                claw.setTargetPosition(-750);
+                claw.setPower(.25);
                 claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            if(gamepad1.y) {
-                pincher.setPosition(positionS);
+            if(gamepad2.dpad_down) {
+                claw.setTargetPosition(-1800);
+                claw.setPower(.25);
+                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            if(gamepad2.left_bumper) {
+            if(gamepad2.dpad_left) {
+                claw.setTargetPosition(-1250);
+                claw.setPower(.25);
+                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if(gamepad2.right_bumper) {
                 grab2.setPosition(.5);
                 grab1.setPosition(.3);
             }
-            if(gamepad2.right_bumper) {
-                grab2.setPosition(.6);
-                grab1.setPosition(.2);
+            if(gamepad2.left_bumper) {
+                grab2.setPosition(.7);
+                grab1.setPosition(.1);
             }
-            if (gamepad1.dpad_up) {
+            if (gamepad2.right_trigger > .1) {
                 pincher.setPosition(.8);
             }
-            if (gamepad1.dpad_down) {
+            if (gamepad2.left_trigger > .1) {
                 pincher.setPosition(.6);
             }
             double y = gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
-            y *= .5;
-            x *= .5;
-            rx *= .5;
+            y *= .65;
+            x *= .65;
+            rx *= .65;
 
             if(gamepad1.left_trigger > 0) {
                 y *= .5;
@@ -99,7 +117,7 @@ public class TeleOpMeet1 extends LinearOpMode {
             rightRearMotor.setPower(backRightPower);
 
             telemetry.addData("Position Servo",positionS);
-            telemetry.addData("Position",arm.getCurrentPosition());
+            telemetry.addData("Position",claw.getCurrentPosition());
             telemetry.update();
         }
         rightFrontMotor.setPower(0.0);
