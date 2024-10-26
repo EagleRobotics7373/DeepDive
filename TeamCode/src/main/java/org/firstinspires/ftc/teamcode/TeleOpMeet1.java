@@ -55,12 +55,12 @@ public class TeleOpMeet1 extends LinearOpMode {
 //            }
             if(gamepad2.y) {
                 arm.setTargetPosition(12250);
-                arm.setPower(.5);
+                arm.setPower(.7);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             if(gamepad2.a) {
                 arm.setTargetPosition(0);
-                arm.setPower(.5);
+                arm.setPower(.7);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             if(gamepad2.dpad_up) {
@@ -118,6 +118,7 @@ public class TeleOpMeet1 extends LinearOpMode {
 
             telemetry.addData("Position Servo",positionS);
             telemetry.addData("Position",claw.getCurrentPosition());
+            telemetry.addData("Position Arm",arm.getCurrentPosition());
             telemetry.update();
         }
         rightFrontMotor.setPower(0.0);
