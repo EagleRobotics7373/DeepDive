@@ -17,10 +17,8 @@ public class TeleOpMeet1 extends LinearOpMode {
         DcMotor rightRearMotor = hardwareMap.get(DcMotor.class, "rightRear");
         DcMotor leftRearMotor = hardwareMap.get(DcMotor.class, "leftRear");
         DcMotor arm = hardwareMap.get(DcMotor.class, "Arm");
-        DcMotor claw = hardwareMap.get(DcMotor.class, "Claw");
-        Servo grab1 = hardwareMap.get(Servo.class, "RightGrab");
-        Servo grab2 = hardwareMap.get(Servo.class, "LeftGrab");
-        Servo pincher = hardwareMap.get(Servo.class, "Pincher");
+        DcMotor spin = hardwareMap.get(DcMotor.class, "Spin");
+        Servo bucket = hardwareMap.get(Servo.class, "Bucket");
         rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -30,76 +28,53 @@ public class TeleOpMeet1 extends LinearOpMode {
         waitForStart();
 
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        claw.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        claw.setPower(.25);
-        claw.setTargetPosition(-740);
-        claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (opModeIsActive()) {
-//            if (gamepad2.dpad_up) {
-//                position += 250;
-//                sleep(100);
-//            }
-//            if (gamepad2.dpad_down) {
-//                position -= 250;
-//                sleep(100);
-//            }
-//            if (gamepad1.dpad_up) {
-//                positionS += .1;
-//                sleep(100);
-//            }
-//            if (gamepad1.dpad_down) {
-//                positionS -= .1;
-//                sleep(100);
-//            }
-            if(gamepad2.y) {
-                arm.setTargetPosition(12250);
-                arm.setPower(.7);
+            if(arm.getCurrentPosition()>1000) {
+                bucket.setPosition(.8);
+            } else {
+                bucket.setPosition(.7);
+            }
+            if (gamepad1.dpad_up) {
+                position += 250;
+                sleep(200);
+            }
+            if (gamepad1.dpad_down) {
+                position -= 250;
+                sleep(200);
+            }
+            if (gamepad2.dpad_up) {
+                positionS += .1;
+                sleep(100);
+            }
+            if (gamepad2.dpad_down) {
+                positionS -= .1;
+                sleep(100);
+            }
+            if (gamepad2.y) {
+                arm.setTargetPosition(11750);
+                arm.setPower(1);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            if(gamepad2.a) {
+            if (gamepad2.a) {
                 arm.setTargetPosition(0);
-                arm.setPower(.7);
+                arm.setPower(1);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            if(gamepad2.dpad_up) {
-                claw.setTargetPosition(-750);
-                claw.setPower(.25);
-                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            if(gamepad2.dpad_down) {
-                claw.setTargetPosition(-1800);
-                claw.setPower(.25);
-                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            if(gamepad2.dpad_left) {
-                claw.setTargetPosition(-1250);
-                claw.setPower(.25);
-                claw.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            if(gamepad2.right_bumper) {
-                grab2.setPosition(.5);
-                grab1.setPosition(.3);
-            }
-            if(gamepad2.left_bumper) {
-                grab2.setPosition(.7);
-                grab1.setPosition(.1);
-            }
-            if (gamepad2.right_trigger > .1) {
-                pincher.setPosition(.8);
             }
             if (gamepad2.left_trigger > .1) {
-                pincher.setPosition(.6);
+                spin.setPower(.65);
+            }
+            if (gamepad2.right_trigger > .1) {
+                spin.setPower(0);
             }
             double y = gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x * 1.1;
+            double x = -gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
             y *= .65;
             x *= .65;
             rx *= .65;
 
-            if(gamepad1.left_trigger > 0) {
+            if (gamepad1.left_trigger > 0) {
                 y *= .5;
                 x *= .5;
                 rx *= .5;
@@ -116,9 +91,9 @@ public class TeleOpMeet1 extends LinearOpMode {
             rightFrontMotor.setPower(frontRightPower);
             rightRearMotor.setPower(backRightPower);
 
-            telemetry.addData("Position Servo",positionS);
-            telemetry.addData("Position",claw.getCurrentPosition());
-            telemetry.addData("Position Arm",arm.getCurrentPosition());
+            telemetry.addData("Position Servo", positionS);
+            telemetry.addData("Position", position);
+            telemetry.addData("Position Arm", arm.getCurrentPosition());
             telemetry.update();
         }
         rightFrontMotor.setPower(0.0);
@@ -126,6 +101,4 @@ public class TeleOpMeet1 extends LinearOpMode {
         rightRearMotor.setPower(0.0);
         leftRearMotor.setPower(0.0);
     }
-
-
-}
+    }

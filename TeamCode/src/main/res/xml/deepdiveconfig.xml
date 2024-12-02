@@ -7,14 +7,14 @@
             <Matrix12vMotor name="leftFront" port="2" />
             <Matrix12vMotor name="rightRear" port="1" />
             <Matrix12vMotor name="rightFront" port="0" />
-            <Servo name="RightGrab" port="0" />
-            <Servo name="LeftGrab" port="1" />
-            <Servo name="Pincher" port="2" />
+            <Servo name="Bucket" port="0" />
         </LynxModule>
         <LynxModule name="Expansion Hub" port="2">
-            <Matrix12vMotor name="Arm" port="2" />
-            <Matrix12vMotor name="Claw" port="3" />
+            <Matrix12vMotor name="Arm" port="0" />
+            <Matrix12vMotor name="Spin" port="1" />
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
+            <Matrix12vMotor name="parallel" port="2" />
+            <Matrix12vMotor name="perpendicular" port="3" />
         </LynxModule>
     </LynxUsbDevice>
 </Robot>
