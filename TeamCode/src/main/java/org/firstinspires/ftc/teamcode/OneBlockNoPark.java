@@ -1,18 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-@Autonomous(name="OneBlock", preselectTeleOp= "TeleOpMeet1")
-public class OneBlock extends LinearOpMode {
+
+@Autonomous(name="OneBlockNoPark", preselectTeleOp= "TeleOpMeet1")
+public class OneBlockNoPark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -33,13 +31,12 @@ public class OneBlock extends LinearOpMode {
                     arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     rotate.setPosition(.5);
                 })
-                .forward(20)
-                .turn(Math.toRadians(-110))
+                .forward(5)
+                .turn(Math.toRadians(-105))
 //                .forward(51) original forward, was working
-                .forward(51)
+                .forward(5)
 //                .turn(Math.toRadians(-57)) original rotation
-                .turn(Math.toRadians(-53))
-                .forward(30)
+                .turn(Math.toRadians(-51))
                 .waitSeconds(3)
                 .addTemporalMarker(7, ()-> {
                     rotate.setPosition(.5);
@@ -50,18 +47,13 @@ public class OneBlock extends LinearOpMode {
                 .addTemporalMarker(9.5, ()-> {
                     bucket.setPosition(0);
                 })
-//                .back(16) original
+                .back(16)
                 .addTemporalMarker(11, ()-> {
                     bucket.setPosition(.55                              );
                     arm.setPower(1);
                     arm.setTargetPosition(0);
                     arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 })
-                //park
-                .back(30)
-                .turn(Math.toRadians(68))
-                .back(100)
-
 //                .turn(Math.toRadians(-53))
 //                .back(10)
 //                .waitSeconds(3)
